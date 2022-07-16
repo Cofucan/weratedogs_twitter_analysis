@@ -14265,16 +14265,25 @@ a.anchor-link {
 <div class="jp-Cell-inputWrapper"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>The aim of this project was to analyze tweet data from the WeRateDogs Twitter handle. I was given a dataset containing over 5000 tweets with their tweet ids. This data enabled by to be able to fetch extra tweet information about old tweets since twitter normally doesn’t allow to fetch tweets older than a week.
-After reading the given datasets into Pandas dataframes, I went ahead to get a Twitter developer account with elevated access in order to be able to use the Twitter API. I was able to query the needed tweet data using Tweepy python package and Twitter’s OAuth 2.0 authentication.
-After getting the data, I stored it in a text file (in JSON format) and then read that into a Pandas dataframe. I also decided to join the tables (3 of them) to one big table, just to make things more straightforward. 
-The <code>tweets_enhanced</code> dataset originally contained over 5000 tweets, but only half of them had ratings (which I needed for this analysis). There were a lot of issues with the dataset in terms of quality and tidiness. I was able to address some issues but many are still left. I could not finish the data cleaning because of time constraints and limited availability of data.
-The <code>wrangle_act</code> notebook contains the issues I was able to clean. Some of the issues I could not clean include:</p>
+After reading the given datasets into Pandas dataframes, I went ahead to get a Twitter developer account with elevated access in order to be able to use the Twitter API. I was able to query the needed tweet data using Tweepy python package and Twitter’s OAuth 2.0 authentication.</p>
+<p>The <code>tweets_enhanced</code> dataset originally contained over 5000 tweets, but only half of them had ratings (which I needed for this analysis). There were a lot of issues with the dataset in terms of quality and tidiness. I was able to address some issues but many are still left. I could not finish the data cleaning because of time constraints and limited availability of data.</p>
+<p>During my visual assessment, I noticed the following:</p>
+<ul>
+<li>There are a lot of invalid dog names, signified by the lowercase names.</li>
+<li>Some tweets have more than one number ratio, but the last figure is usually the valid dog rating.</li>
+<li>Some tweets more than one valid dog rating because the image contained more than one dog.</li>
+<li>Some tweets have numbers that are in the format of dog rating but are not really ratings, e.g. 24/7</li>
+<li>Some tweets have negative numerator rating (e.g -5/10)</li>
+</ul>
+<p>To clean the dog rating issues, I extracted the dog ratings again from the text with a better regular expression. This regular expression would only extract ratings that have a denominator of 10 and of there were multiple ratings, it would select the last one. It would also extract decimal ratings and negative ratings.</p>
+<p>The <code>wrangle_act</code> notebook contains the issues I was able to clean. Some of the issues I could not clean include:</p>
 <ul>
 <li>No dog stage data for some tweets/dogs. A large percentage of the tweets do not have data for dog stage.</li>
 <li>A lot of dog names are missing. The dog’s name here refers to the name given by the owners, not the dog breed.</li>
 <li>The image prediction data was not available for some tweets so I had to filter out those tweets since I was not able to perform image prediction for those tweet images myself.</li>
 </ul>
-<p>I tried to employ the use of functions where possible to avoid cluttering the namespace. For the twitter query function, I made it in such a way that it would only run if the relevant txt file is absent from the directory.</p>
+<p>After getting the data, I stored it in a text file (in JSON format) and then read that into a Pandas dataframe. After cleaning, I also joined the tables (3 of them) to one big table. I used an inner-join to merge the tables because I only want tweets that have ratings and image predictions. This reduced the tweets from 2100 to about 1287 in number.</p>
+<p>I employed the use of functions where possible to avoid cluttering the namespace. For the twitter query function, I made it in such a way that it would only run if the relevant txt file is absent from the directory.</p>
 
 </div>
 </div>
